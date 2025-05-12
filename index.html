@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Registration form</title>
+
+        <style>
+           /* Basic Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f0f4f8;
+  padding: 2rem;
+  color: #333;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+}
+
+/* Form Styling */
+form {
+  background: #fff;
+  padding: 2rem;
+  max-width: 500px;
+  margin: 0 auto;
+  border-radius: 8px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 500;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="date"] {
+  width: 100%;
+  padding: 0.6rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+form input[type="checkbox"] {
+  margin-right: 0.5rem;
+}
+
+form button[type="submit"] {
+  background: #3498db;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
+
+form button[type="submit"]:hover {
+  background: #2980b9;
+}
+
+/* Table Styling */
+#userTableContainer {
+  max-width: 900px;
+  margin: 2rem auto;
+  display: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+thead {
+  background-color: #3498db;
+  color: #fff;
+}
+
+th, td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eaeaea;
+}
+
+tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+        </style>
+     </head>
+
+    <body>
+        <h2>Registration Form</h2>
+  <form id="registrationForm">
+    <label>Name: <input type="text" id="name" required /></label><br><br>
+    <label>Email: <input type="email" id="email" required /></label><br><br>
+    <label>Password: <input type="password" id="password" required /></label><br><br>
+    <label>Date of Birth: <input type="date" id="dob" required /></label><br><br>
+    <label><input type="checkbox" id="terms" required /> Accept Terms?</label><br><br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="userTableContainer">
+    <h3>Registered Users</h3>
+    <table id="userTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Password</th>
+          <th>Dob</th>
+          <th>Accepted terms?</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <script src = "index.js"></script>
+    </body>
+</html>
