@@ -4,21 +4,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const tableBody = document.querySelector("#dataTable tbody");
   const dobError = document.getElementById("dobError");
 
-  // Load existing data from localStorage
   let formDataList = JSON.parse(localStorage.getItem("formDataList")) || [];
 
-  // Function to update table
   function updateTable() {
-    tableBody.innerHTML = ""; // Clear current rows
-
+    tableBody.innerHTML = "";
     if (formDataList.length === 0) {
       dataTable.style.display = "none";
       return;
     }
-
     dataTable.style.display = "table";
 
-    formDataList.forEach((entry) => {
+    formDataList.forEach(entry => {
       const row = document.createElement("tr");
       row.innerHTML = `
         <td>${entry.name}</td>
@@ -31,7 +27,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Handle form submission
+  function isValidEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  }
+
   form.addEventListener("submit", function (event) {
     event.preventDefault();
 
@@ -41,7 +41,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const dateInput = document.getElementById("date").value;
     const checkbox = document.getElementById("checkbox").checked;
 
-    // Show DOB error or clear it
     dobError.style.display = "none";
 
     if (!dateInput) {
@@ -56,7 +55,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const monthDiff = today.getMonth() - dob.getMonth();
     const dayDiff = today.getDate() - dob.getDate();
 
-    // Adjust age if birthday hasn't occurred yet this year
     if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
       age--;
     }
@@ -66,19 +64,21 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // If all validations pass, proceed to save data
-    const newData = { name, email, password, date: dateInput, checkbox };
+    if (!isValidEmail(email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
 
+    const newData = { name, email, password, date: dateInput, checkbox };
     formDataList.push(newData);
     localStorage.setItem("formDataList", JSON.stringify(formDataList));
 
     alert("Registration successful");
 
-    form.reset(); // Reset form fields
-    updateTable(); // Update table
+    form.reset();
+    updateTable();
   });
 
-  // Initial table population
   updateTable();
 });
 
