@@ -1,83 +1,84 @@
-document.addEventListener('DOMContentLoaded', function () {
-  displayUsersFromStorage();
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("registrationForm");
+  const dataTable = document.getElementById("dataTable");
+  const tableBody = document.querySelector("#dataTable tbody");
+  const dobError = document.getElementById("dobError");
 
-  document.getElementById('registrationForm').addEventListener('submit', function (e) {
-    e.preventDefault();
+  // Load existing data from localStorage
+  let formDataList = JSON.parse(localStorage.getItem("formDataList")) || [];
 
-    // Get input values
-    const name = document.getElementById('name').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
-    const dob = document.getElementById('dob').value;
-    const termsAccepted = document.getElementById('acceptTerms').checked;
+  // Function to update table
+  function updateTable() {
+    tableBody.innerHTML = ""; // Clear current rows
 
-    // Validate email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      alert("Please enter a valid email address.");
+    if (formDataList.length === 0) {
+      dataTable.style.display = "none";
       return;
     }
 
-    // Validate age
-    const age = getAge(dob);
-    if (age < 18 || age > 55) {
-      alert("You must be between 18 and 55 years old.");
-      return;
-    }
+    dataTable.style.display = "table";
 
-    const newUser = {
-      name,
-      email,
-      password,
-      dob,
-      termsAccepted
-    };
-
-    // Save to localStorage
-    let users = JSON.parse(localStorage.getItem('users')) || [];
-    users.push(newUser);
-    localStorage.setItem('users', JSON.stringify(users));
-
-    // Update table display
-    displayUsersFromStorage();
-
-    // Reset form
-    document.getElementById('registrationForm').reset();
-  });
-});
-
-// Utility: calculate age from DOB
-function getAge(dobString) {
-  const today = new Date();
-  const dob = new Date(dobString);
-  let age = today.getFullYear() - dob.getFullYear();
-  const m = today.getMonth() - dob.getMonth();
-  if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
-    age--;
+    formDataList.forEach((entry) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${entry.name}</td>
+        <td>${entry.email}</td>
+        <td>•••••••</td>
+        <td>${entry.date}</td>
+        <td>${entry.checkbox ? "Yes" : "No"}</td>
+      `;
+      tableBody.appendChild(row);
+    });
   }
-  return age;
-}
 
-// Display table from stored users
-function displayUsersFromStorage() {
-  const users = JSON.parse(localStorage.getItem('users')) || [];
-  const tableBody = document.querySelector('#userTable tbody');
-  tableBody.innerHTML = '';
+  // Handle form submission
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
 
-  users.forEach(user => {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${user.name}</td>
-      <td>${user.email}</td>
-      <td>${user.password}</td>
-      <td>${user.dob}</td>
-      <td>${user.termsAccepted}</td>
-    `;
-    tableBody.appendChild(row);
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const dateInput = document.getElementById("date").value;
+    const checkbox = document.getElementById("checkbox").checked;
+
+    // Show DOB error or clear it
+    dobError.style.display = "none";
+
+    if (!dateInput) {
+      dobError.textContent = "Please select a valid date.";
+      dobError.style.display = "block";
+      return;
+    }
+
+    const dob = new Date(dateInput);
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    const monthDiff = today.getMonth() - dob.getMonth();
+    const dayDiff = today.getDate() - dob.getDate();
+
+    // Adjust age if birthday hasn't occurred yet this year
+    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+      age--;
+    }
+
+    if (age < 18 || age > 55) {
+      dobError.style.display = "block";
+      return;
+    }
+
+    // If all validations pass, proceed to save data
+    const newData = { name, email, password, date: dateInput, checkbox };
+
+    formDataList.push(newData);
+    localStorage.setItem("formDataList", JSON.stringify(formDataList));
+
+    alert("Registration successful");
+
+    form.reset(); // Reset form fields
+    updateTable(); // Update table
   });
 
-  // Show or hide the table
-  const tableContainer = document.getElementById('userTableContainer');
-  tableContainer.style.display = users.length > 0 ? 'block' : 'none';
-}
+  // Initial table population
+  updateTable();
+});
 
