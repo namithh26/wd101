@@ -23,6 +23,11 @@
       margin-bottom: 30px;
     }
 
+    .form h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
     label {
       display: block;
       margin: 10px 0 5px;
@@ -46,6 +51,10 @@
       margin: 15px 0;
     }
 
+    .checkbox input[type="checkbox"] {
+      margin-right: 10px;
+    }
+
     button {
       width: 100%;
       background-color: #4CAF50;
@@ -57,9 +66,8 @@
       cursor: pointer;
     }
 
-    small#dobError {
-      color: red;
-      display: none;
+    button:hover {
+      background-color: #45a049;
     }
 
     table {
@@ -67,7 +75,7 @@
       max-width: 800px;
       border-collapse: collapse;
       margin-top: 20px;
-      display: none;
+      display: none; /* Hidden by default */
     }
 
     th,
@@ -80,11 +88,16 @@
     th {
       background-color: #f8f8f8;
     }
+
+    small#dobError {
+      color: red;
+      display: none;
+    }
   </style>
 </head>
 <body>
 
-  <div class="form">
+  <div id="reg_form" class="form">
     <h1>Registration</h1>
     <form id="registrationForm">
       <label for="name">Name</label>
@@ -96,13 +109,13 @@
       <label for="password">Password</label>
       <input required type="password" id="password" />
 
-      <label for="date">Date of Birth</label>
-      <input required type="date" id="date" />
+      <label for="dob">Date of Birth</label>
+      <input required type="date" id="dob" />
       <small id="dobError">You must be between 18 and 55 years old.</small>
 
       <div class="checkbox">
         <input type="checkbox" id="checkbox" />
-        <label for="checkbox">I agree to the terms and conditions</label>
+        <label for="checkbox">Accepted terms?</label>
       </div>
 
       <br />
@@ -110,7 +123,7 @@
     </form>
   </div>
 
-  <!-- Table with correct headers -->
+  <!-- Table to show registration data -->
   <table id="dataTable">
     <thead>
       <tr>
@@ -118,12 +131,12 @@
         <th>Email</th>
         <th>Password</th>
         <th>Dob</th>
-        <th>Accepted terms</th>
+        <th>Terms</th>
       </tr>
     </thead>
     <tbody></tbody>
   </table>
 
-  <script src="index.js"></script>
+  <script src="copy1.js"></script>
 </body>
 </html>
